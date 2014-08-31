@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
      //Yep that just happened... You're not reading this wrong, I called a slot as a function +10 design boss mode 9000
      on_actionPopulate_Sample_Data_triggered();
 
-   matchSheetHeaders_ << "Player First" << "Player Last" << "Goals Scored" << "Votes For Match" << "Match Outcome";
+   matchSheetHeaders_ << "Player First" << "Player Last" << "Player Scored (True/False)" << "Votes For Match" << "Match Outcome";
 
    for(int i = 0; i < matchSheets_.size(); i++){
        matchSheets_.at(i)->setRowCount(16); //Welcome to hacksville, I just kinda sorta know there are going to be 16 spots on each team sheet, sweg only the first 11 get payed though bcz the rest are baddies
@@ -108,7 +108,8 @@ void MainWindow::updateTotal()
         }
        unsigned int playerTotal = 0; //Initialise at 0 to be safe
         //Just created the expression 100x - 50
-       playerTotal = playerOfSeasonBonus + (100 * PlayerInformationModel->index(i,4).data().toInt() - 50);
+       //This will probably be invalid due to a bug I included :) - The bug is that Goals scored is not calculated properly
+       playerTotal = (750) + playerOfSeasonBonus + (100 * PlayerInformationModel->index(i,4).data().toInt() - 50) + (PlayerInformationModel->index(i,3).data().toInt() * 30);
        qDebug() << playerTotal;
     PlayerInformationModel->setData(PlayerInformationModel->index(i,7),playerTotal);
     }
@@ -120,7 +121,7 @@ void MainWindow::on_actionPopulate_Sample_Data_triggered()
     PlayerInformationModel->setData(PlayerInformationModel->index(0,0),"Anna");
     PlayerInformationModel->setData(PlayerInformationModel->index(0,1),"Belle");
     PlayerInformationModel->setData(PlayerInformationModel->index(0,2),TRUE);
-    PlayerInformationModel->setData(PlayerInformationModel->index(0,3),14);
+    PlayerInformationModel->setData(PlayerInformationModel->index(0,3),0);
     PlayerInformationModel->setData(PlayerInformationModel->index(0,4),9);
     //This is just a little percentage hack using C-Style casting and then times by .1 to get the percentage, I explicitly cast because QVariant might decide to use an Int
     //which would break my later calculations
@@ -130,7 +131,7 @@ void MainWindow::on_actionPopulate_Sample_Data_triggered()
     PlayerInformationModel->setData(PlayerInformationModel->index(1,0),"Betty");
     PlayerInformationModel->setData(PlayerInformationModel->index(1,1),"Chandler");
     PlayerInformationModel->setData(PlayerInformationModel->index(1,2),FALSE);
-    PlayerInformationModel->setData(PlayerInformationModel->index(1,3),14);
+    PlayerInformationModel->setData(PlayerInformationModel->index(1,3),0);
     PlayerInformationModel->setData(PlayerInformationModel->index(1,4),2);
     //This is just a little percentage hack using C-Style casting and then times by .1 to get the percentage, I explicitly cast because QVariant might decide to use an Int
     //which would break my later calculations
@@ -141,7 +142,7 @@ void MainWindow::on_actionPopulate_Sample_Data_triggered()
     PlayerInformationModel->setData(PlayerInformationModel->index(2,0),"Cathy");
     PlayerInformationModel->setData(PlayerInformationModel->index(2,1),"Dyson");
     PlayerInformationModel->setData(PlayerInformationModel->index(2,2),FALSE);
-    PlayerInformationModel->setData(PlayerInformationModel->index(2,3),14);
+    PlayerInformationModel->setData(PlayerInformationModel->index(2,3),0);
     PlayerInformationModel->setData(PlayerInformationModel->index(2,4),2);
     //This is just a little percentage hack using C-Style casting and then times by .1 to get the percentage, I explicitly cast because QVariant might decide to use an Int
     //which would break my later calculations
@@ -154,7 +155,7 @@ void MainWindow::on_actionPopulate_Sample_Data_triggered()
     PlayerInformationModel->setData(PlayerInformationModel->index(3,0),"Donna");
     PlayerInformationModel->setData(PlayerInformationModel->index(3,1),"Edison");
     PlayerInformationModel->setData(PlayerInformationModel->index(3,2),FALSE);
-    PlayerInformationModel->setData(PlayerInformationModel->index(3,3),1);
+    PlayerInformationModel->setData(PlayerInformationModel->index(3,3),0);
     PlayerInformationModel->setData(PlayerInformationModel->index(3,4),4);
     //This is just a little percentage hack using C-Style casting and then times by .1 to get the percentage, I explicitly cast because QVariant might decide to use an Int
     //which would break my later calculations
@@ -168,7 +169,7 @@ void MainWindow::on_actionPopulate_Sample_Data_triggered()
     PlayerInformationModel->setData(PlayerInformationModel->index(4,0),"Emily");
     PlayerInformationModel->setData(PlayerInformationModel->index(4,1),"Farrell");
     PlayerInformationModel->setData(PlayerInformationModel->index(4,2),FALSE);
-    PlayerInformationModel->setData(PlayerInformationModel->index(4,3),1);
+    PlayerInformationModel->setData(PlayerInformationModel->index(4,3),0);
     PlayerInformationModel->setData(PlayerInformationModel->index(4,4),4);
     //This is just a little percentage hack using C-Style casting and then times by .1 to get the percentage, I explicitly cast because QVariant might decide to use an Int
     //which would break my later calculations
@@ -183,7 +184,7 @@ void MainWindow::on_actionPopulate_Sample_Data_triggered()
     //Onyah Garrett
     PlayerInformationModel->setData(PlayerInformationModel->index(5,1),"Garrett");
     PlayerInformationModel->setData(PlayerInformationModel->index(5,2),FALSE);
-    PlayerInformationModel->setData(PlayerInformationModel->index(5,3),1);
+    PlayerInformationModel->setData(PlayerInformationModel->index(5,3),0);
     PlayerInformationModel->setData(PlayerInformationModel->index(5,4),4);
     //This is just a little percentage hack using C-Style casting and then times by .1 to get the percentage, I explicitly cast because QVariant might decide to use an Int
     //which would break my later calculations
@@ -197,7 +198,7 @@ void MainWindow::on_actionPopulate_Sample_Data_triggered()
     PlayerInformationModel->setData(PlayerInformationModel->index(6,0),"Gina");
     PlayerInformationModel->setData(PlayerInformationModel->index(6,1),"Harper");
     PlayerInformationModel->setData(PlayerInformationModel->index(6,2),FALSE);
-    PlayerInformationModel->setData(PlayerInformationModel->index(6,3),1);
+    PlayerInformationModel->setData(PlayerInformationModel->index(6,3),0);
     PlayerInformationModel->setData(PlayerInformationModel->index(6,4),4);
     //This is just a little percentage hack using C-Style casting and then times by .1 to get the percentage, I explicitly cast because QVariant might decide to use an Int
     //which would break my later calculations
@@ -211,7 +212,7 @@ void MainWindow::on_actionPopulate_Sample_Data_triggered()
     PlayerInformationModel->setData(PlayerInformationModel->index(7,0),"Henrietta");
     PlayerInformationModel->setData(PlayerInformationModel->index(7,1),"Jones");
     PlayerInformationModel->setData(PlayerInformationModel->index(7,2),FALSE);
-    PlayerInformationModel->setData(PlayerInformationModel->index(7,3),1);
+    PlayerInformationModel->setData(PlayerInformationModel->index(7,3),0);
     PlayerInformationModel->setData(PlayerInformationModel->index(7,4),4);
     //This is just a little percentage hack using C-Style casting and then times by .1 to get the percentage, I explicitly cast because QVariant might decide to use an Int
     //which would break my later calculations
@@ -224,7 +225,7 @@ void MainWindow::on_actionPopulate_Sample_Data_triggered()
     PlayerInformationModel->setData(PlayerInformationModel->index(8,0),"Jenny");
     PlayerInformationModel->setData(PlayerInformationModel->index(8,1),"Kennedy");
     PlayerInformationModel->setData(PlayerInformationModel->index(8,2),FALSE);
-    PlayerInformationModel->setData(PlayerInformationModel->index(8,3),1);
+    PlayerInformationModel->setData(PlayerInformationModel->index(8,3),0);
     PlayerInformationModel->setData(PlayerInformationModel->index(8,4),4);
     //This is just a little percentage hack using C-Style casting and then times by .1 to get the percentage, I explicitly cast because QVariant might decide to use an Int
     //which would break my later calculations
@@ -238,7 +239,7 @@ void MainWindow::on_actionPopulate_Sample_Data_triggered()
     PlayerInformationModel->setData(PlayerInformationModel->index(9,0),"Kathy");
     PlayerInformationModel->setData(PlayerInformationModel->index(9,1),"Louis");
     PlayerInformationModel->setData(PlayerInformationModel->index(9,2),FALSE);
-    PlayerInformationModel->setData(PlayerInformationModel->index(9,3),1);
+    PlayerInformationModel->setData(PlayerInformationModel->index(9,3),0);
     PlayerInformationModel->setData(PlayerInformationModel->index(9,4),4);
     //This is just a little percentage hack using C-Style casting and then times by .1 to get the percentage, I explicitly cast because QVariant might decide to use an Int
     //which would break my later calculations
@@ -252,7 +253,7 @@ void MainWindow::on_actionPopulate_Sample_Data_triggered()
     PlayerInformationModel->setData(PlayerInformationModel->index(10,0),"Lisa");
     PlayerInformationModel->setData(PlayerInformationModel->index(10,1),"Madison");
     PlayerInformationModel->setData(PlayerInformationModel->index(10,2),FALSE);
-    PlayerInformationModel->setData(PlayerInformationModel->index(10,3),1);
+    PlayerInformationModel->setData(PlayerInformationModel->index(10,3),0);
     PlayerInformationModel->setData(PlayerInformationModel->index(10,4),4);
     //This is just a little percentage hack using C-Style casting and then times by .1 to get the percentage, I explicitly cast because QVariant might decide to use an Int
     //which would break my later calculations
@@ -266,7 +267,7 @@ void MainWindow::on_actionPopulate_Sample_Data_triggered()
     PlayerInformationModel->setData(PlayerInformationModel->index(11,0),"Mary");
     PlayerInformationModel->setData(PlayerInformationModel->index(11,1),"Nova");
     PlayerInformationModel->setData(PlayerInformationModel->index(11,2),FALSE);
-    PlayerInformationModel->setData(PlayerInformationModel->index(11,3),1);
+    PlayerInformationModel->setData(PlayerInformationModel->index(11,3),0);
     PlayerInformationModel->setData(PlayerInformationModel->index(11,4),4);
     //This is just a little percentage hack using C-Style casting and then times by .1 to get the percentage, I explicitly cast because QVariant might decide to use an Int
     //which would break my later calculations
@@ -279,7 +280,7 @@ void MainWindow::on_actionPopulate_Sample_Data_triggered()
     PlayerInformationModel->setData(PlayerInformationModel->index(12,0),"Nina");
     PlayerInformationModel->setData(PlayerInformationModel->index(12,1),"Porter");
     PlayerInformationModel->setData(PlayerInformationModel->index(12,2),FALSE);
-    PlayerInformationModel->setData(PlayerInformationModel->index(12,3),1);
+    PlayerInformationModel->setData(PlayerInformationModel->index(12,3),0);
     PlayerInformationModel->setData(PlayerInformationModel->index(12,4),4);
     //This is just a little percentage hack using C-Style casting and then times by .1 to get the percentage, I explicitly cast because QVariant might decide to use an Int
     //which would break my later calculations
@@ -292,7 +293,7 @@ void MainWindow::on_actionPopulate_Sample_Data_triggered()
     PlayerInformationModel->setData(PlayerInformationModel->index(13,0),"Tina");
     PlayerInformationModel->setData(PlayerInformationModel->index(13,1),"Vella");
     PlayerInformationModel->setData(PlayerInformationModel->index(13,2),FALSE);
-    PlayerInformationModel->setData(PlayerInformationModel->index(13,3),1);
+    PlayerInformationModel->setData(PlayerInformationModel->index(13,3),0);
     PlayerInformationModel->setData(PlayerInformationModel->index(13,4),4);
     //This is just a little percentage hack using C-Style casting and then times by .1 to get the percentage, I explicitly cast because QVariant might decide to use an Int
     //which would break my later calculations
@@ -305,7 +306,7 @@ void MainWindow::on_actionPopulate_Sample_Data_triggered()
     PlayerInformationModel->setData(PlayerInformationModel->index(14,0),"Rosa");
     PlayerInformationModel->setData(PlayerInformationModel->index(14,1),"Sanders");
     PlayerInformationModel->setData(PlayerInformationModel->index(14,2),FALSE);
-    PlayerInformationModel->setData(PlayerInformationModel->index(14,3),1);
+    PlayerInformationModel->setData(PlayerInformationModel->index(14,3),0);
     PlayerInformationModel->setData(PlayerInformationModel->index(14,4),4);
     //This is just a little percentage hack using C-Style casting and then times by .1 to get the percentage, I explicitly cast because QVariant might decide to use an Int
     //which would break my later calculations
@@ -318,7 +319,7 @@ void MainWindow::on_actionPopulate_Sample_Data_triggered()
     PlayerInformationModel->setData(PlayerInformationModel->index(15,0),"Wendy");
     PlayerInformationModel->setData(PlayerInformationModel->index(15,1),"Anderson");
     PlayerInformationModel->setData(PlayerInformationModel->index(15,2),FALSE);
-    PlayerInformationModel->setData(PlayerInformationModel->index(15,3),1);
+    PlayerInformationModel->setData(PlayerInformationModel->index(15,3),0);
     PlayerInformationModel->setData(PlayerInformationModel->index(15,4),4);
     //This is just a little percentage hack using C-Style casting and then times by .1 to get the percentage, I explicitly cast because QVariant might decide to use an Int
     //which would break my later calculations
@@ -345,11 +346,20 @@ void MainWindow::onPlayerInformationChanged(QModelIndex index, QModelIndex index
 
 void MainWindow::onMatchOneSheetChanged(QModelIndex index, QModelIndex index_side)
 {
-
+    //Votes
   if(index.column() == 3 ){
        int voteTotal = matchSheets_.at(0)->index(index.row(),3).data().toInt() + matchSheets_.at(1)->index(index.row(),3).data().toInt() + matchSheets_.at(2)->index(index.row(),3).data().toInt();
       PlayerInformationModel->setData(PlayerInformationModel->index(index.row(),4),voteTotal);
   }
+  //Goals (Note: Has an intentional bug, this was so I would have something to write about for the VCAA :)
+  if(index.column() == 2){
+      if(matchSheets_.at(0)->index(index.row(),2).data().toBool() == TRUE){
+          PlayerInformationModel->setData(PlayerInformationModel->index(index.row(),3),PlayerInformationModel->index(index.row(),3).data().toInt() + 1);
+      }else{
+             PlayerInformationModel->setData(PlayerInformationModel->index(index.row(),3),PlayerInformationModel->index(index.row(),3).data().toInt() - 1);
+      }
+  }
+
 }
 
 void MainWindow::onMatchTwoSheetChanged(QModelIndex index, QModelIndex index_side)
@@ -358,6 +368,15 @@ void MainWindow::onMatchTwoSheetChanged(QModelIndex index, QModelIndex index_sid
          int voteTotal = matchSheets_.at(0)->index(index.row(),3).data().toInt() + matchSheets_.at(1)->index(index.row(),3).data().toInt() + matchSheets_.at(2)->index(index.row(),3).data().toInt();
        PlayerInformationModel->setData(PlayerInformationModel->index(index.row(),4),voteTotal);
     }
+
+    //Goals (Note: Has an intentional bug, this was so I would have something to write about for the VCAA :)
+    if(index.column() == 2){
+        if(matchSheets_.at(0)->index(index.row(),2).data().toBool() == TRUE){
+            PlayerInformationModel->setData(PlayerInformationModel->index(index.row(),3),PlayerInformationModel->index(index.row(),3).data().toInt() + 1);
+        }else{
+               PlayerInformationModel->setData(PlayerInformationModel->index(index.row(),3),PlayerInformationModel->index(index.row(),3).data().toInt() - 1);
+        }
+    }
 }
 
 void MainWindow::onMatchThreeSheetChanged(QModelIndex index, QModelIndex index_side)
@@ -365,6 +384,15 @@ void MainWindow::onMatchThreeSheetChanged(QModelIndex index, QModelIndex index_s
     if(index.column() == 3 ){
          int voteTotal = matchSheets_.at(0)->index(index.row(),3).data().toInt() + matchSheets_.at(1)->index(index.row(),3).data().toInt() + matchSheets_.at(2)->index(index.row(),3).data().toInt();
         PlayerInformationModel->setData(PlayerInformationModel->index(index.row(),4),voteTotal);
+    }
+
+    //Goals (Note: Has an intentional bug, this was so I would have something to write about for the VCAA :)
+    if(index.column() == 2){
+        if(matchSheets_.at(0)->index(index.row(),2).data().toBool() == TRUE){
+            PlayerInformationModel->setData(PlayerInformationModel->index(index.row(),3),PlayerInformationModel->index(index.row(),3).data().toInt() + 1);
+        }else{
+               PlayerInformationModel->setData(PlayerInformationModel->index(index.row(),3),PlayerInformationModel->index(index.row(),3).data().toInt() - 1);
+        }
     }
 }
 
